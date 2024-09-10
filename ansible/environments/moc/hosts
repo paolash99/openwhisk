@@ -1,7 +1,7 @@
 ansible ansible_connection=local
 
 [edge]
-172.31.22.18        ansible_host=172.31.22.18 ansible_connection=local
+172.31.22.18        ansible_host=172.31.22.18 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [controllers]
 controller0           ansible_host=172.31.22.18 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
@@ -10,7 +10,7 @@ controller0           ansible_host=172.31.22.18 ansible_connection=ssh ansible_u
 kafka0                ansible_host=172.31.17.72 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [schedulers]
-scheduler0            ansible_host=172.31.22.18 ansible_connection=local
+scheduler0            ansible_host=172.31.22.18 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [zookeepers:children]
 kafkas
@@ -23,14 +23,14 @@ invoker0              ansible_host=172.31.17.72  ansible_connection=ssh ansible_
 
 ; db group is only used if db.provider is CouchDB
 [db]
-172.31.22.18        ansible_host=172.31.22.18 ansible_connection=local
+172.31.22.18        ansible_host=172.31.22.18 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [redis]
-172.31.22.18        ansible_host=172.31.22.18 ansible_connection=local
+172.31.22.18        ansible_host=172.31.22.18 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [apigateway]
-172.31.22.18        ansible_host=172.31.22.18 ansible_connection=local
+172.31.22.18        ansible_host=172.31.22.18 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [etcd]
-172.31.22.18        ansible_host=172.31.22.18 ansible_connection=local
+172.31.22.18        ansible_host=172.31.22.18 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
