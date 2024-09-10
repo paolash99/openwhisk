@@ -33,3 +33,4 @@ invoker0              ansible_host=172.31.17.72  ansible_connection=ssh ansible_
 
 [etcd]
 172.31.25.83        ansible_host=172.31.25.83ansible_connection=local
+
