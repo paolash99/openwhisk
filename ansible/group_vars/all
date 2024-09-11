@@ -121,12 +121,7 @@ controller:
     cn: openwhisk-controllers
     keyPrefix: "{{ __controller_ssl_keyPrefix }}"
     storeFlavor: PKCS12
-    clientAuth: "{{ controller_client_auth | default('true') }}"
-    cert: "{{ __controller_ssl_keyPrefix }}openwhisk-server-cert.pem"
-    key: "{{ __controller_ssl_keyPrefix }}openwhisk-server-key.pem"
-    keystore:
-      password: "openwhisk"
-      name: "{{ __controller_ssl_keyPrefix }}openwhisk-keystore.p12"
+    clientAuth: "false" 
   extraEnv: "{{ controller_extraEnv | default({}) }}"
   deployment:
     ignore_error: "{{ controller_deployment_ignore_error | default('False') }}"
