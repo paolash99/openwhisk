@@ -1,36 +1,36 @@
 ansible ansible_connection=local
 
 [edge]
-172.31.34.230        ansible_host=172.31.34.230 ansible_connection=local
+172.31.47.41        ansible_host=172.31.47.41 ansible_connection=local
 
 [controllers]
-controller0           ansible_host=172.31.34.230 ansible_connection=local
+controller0           ansible_host=172.31.47.41 ansible_connection=local
 
 [kafkas]
-kafka0                ansible_host=172.31.43.95 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+kafka0                ansible_host=172.31.32.149 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [schedulers]
-scheduler0            ansible_host=172.31.34.230 ansible_connection=local
+scheduler0            ansible_host=172.31.47.41 ansible_connection=local
 
 [zookeepers:children]
 kafkas
 
 [elasticsearch:children]
 db
-
+pauth.w
 [invokers]
-invoker0              ansible_host=172.31.43.95  ansible_connection=ssh ansible_user=ubuntu nsible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker0              ansible_host=172.31.32.149  ansible_connection=ssh ansible_user=ubuntu nsible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 ; db group is only used if db.provider is CouchDB
 [db]
-172.31.34.230        ansible_host=172.31.34.230 ansible_connection=local
+172.31.47.41        ansible_host=172.31.47.41 ansible_connection=local
 
 [redis]
-172.31.34.230        ansible_host=172.31.34.230 ansible_connection=local
+172.31.47.41        ansible_host=172.31.47.41 ansible_connection=local
 
 [apigateway]
-172.31.34.230        ansible_host=172.31.34.230 ansible_connection=local
+172.31.47.41        ansible_host=172.31.47.41 ansible_connection=local
 
 [etcd]
-172.31.34.230        ansible_host=172.31.34.230 ansible_connection=local
+172.31.47.41        ansible_host=172.31.47.41 ansible_connection=local
 
