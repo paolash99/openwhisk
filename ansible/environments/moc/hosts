@@ -35,7 +35,7 @@ invoker10              ansible_host=172.31.42.110  ansible_connection=ssh ansibl
 invoker11              ansible_host=172.31.42.20  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 invoker12             ansible_host=172.31.45.53  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 invoker13              ansible_host=172.31.40.247  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker14              ansible_host=72.31.41.184  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker14              ansible_host=172.31.41.184  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 invoker15              ansible_host=172.31.42.52  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 ; db group is only used if db.provider is CouchDB
