@@ -48,3 +48,7 @@
   until: (result.rc == 0) and (result.stdout == 'imok')
   retries: 36
   delay: 5
+  
+- name: Debug inventory hostname
+  debug:
+    msg: "Zookeeper node: {{ inventory_hostname }} has ID: {{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
