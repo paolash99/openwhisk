@@ -26,7 +26,7 @@
     restart_policy: "{{ docker.restart.policy }}"
     env:
         TZ: "{{ docker.timezone }}"
-        ZOO_MY_ID: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
+        ZOO_MY_ID: "{% if inventory_hostname == 'kafka0' %}1{% elif inventory_hostname == 'kafka1' %}2{% elif inventory_hostname == 'kafka2' %}3{% endif %}"
         ZOO_SERVERS: "{% set zhosts = [] %}
                       {% for host in groups['zookeepers'] %}
                         {% if host == inventory_hostname %}
