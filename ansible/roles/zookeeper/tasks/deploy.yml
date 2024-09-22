@@ -37,7 +37,7 @@
                       {% endfor %}
                       {{ zhosts | join(' ') }}"
     ports:
-      - "2181:2181"
+      - "{{ zookeeper.port + groups['zookeepers'].index(inventory_hostname) }}:2181"
       - "{{ 2888 + groups['zookeepers'].index(inventory_hostname) }}:2888"
       - "{{ 3888 + groups['zookeepers'].index(inventory_hostname) }}:3888"
     pull: "{{ zookeeper.pull_zookeeper | default(true) }}"
