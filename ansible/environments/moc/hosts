@@ -8,8 +8,8 @@ controller0           ansible_host=172.31.44.120 ansible_connection=local
 
 [kafkas]
 kafka0                ansible_host=172.31.45.183 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-kafka1                ansible_host=172.31.45.183 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-kafka2                ansible_host=172.31.41.169 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+kafka1                ansible_host=172.31.33.127 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+kafka2                ansible_host=172.31.47.142 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [schedulers]
 scheduler0            ansible_host=172.31.44.120 ansible_connection=local
