@@ -1,18 +1,18 @@
 ansible ansible_connection=local
 
 [edge]
-172.31.13.56        ansible_host=172.31.13.56 ansible_connection=local
+172.31.14.61        ansible_host=172.31.14.61 ansible_connection=local
 
 [controllers]
-controller0           ansible_host=172.31.13.56 ansible_connection=local
+controller0           ansible_host=172.31.14.61 ansible_connection=local
 
 [kafkas]
-kafka0                ansible_host=172.31.8.193 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-kafka1                ansible_host=172.31.9.230 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-kafka2                ansible_host=172.31.2.102 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+kafka0                ansible_host=172.31.12.10 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+kafka1                ansible_host=172.31.9.123 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+kafka2                ansible_host=172.31.0.105 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [schedulers]
-scheduler0            ansible_host=172.31.13.56 ansible_connection=local
+scheduler0            ansible_host=172.31.14.61 ansible_connection=local
 
 [zookeepers:children]
 kafkas
@@ -21,32 +21,32 @@ kafkas
 db
 pauth.w
 [invokers]
-invoker0              ansible_host=172.31.2.168   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker1              ansible_host=172.31.6.1     ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker2              ansible_host=172.31.12.176  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker3              ansible_host=172.31.9.211   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker4              ansible_host=172.31.13.115  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker5              ansible_host=172.31.2.148   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker6              ansible_host=172.31.8.168   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker7              ansible_host=172.31.4.73    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker8              ansible_host=172.31.2.43    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker9              ansible_host=172.31.10.175  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker10             ansible_host=172.31.7.63    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker11             ansible_host=172.31.12.127  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker12             ansible_host=172.31.10.54   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker13             ansible_host=172.31.4.87    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker14             ansible_host=172.31.13.93   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker15             ansible_host=172.31.8.125   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker0              ansible_host=172.31.15.3    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker1              ansible_host=172.31.4.132   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker2              ansible_host=172.31.1.244   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker3              ansible_host=172.31.6.164   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker4              ansible_host=172.31.12.223  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker5              ansible_host=172.31.9.224   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker6              ansible_host=172.31.8.176   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker7              ansible_host=172.31.2.49    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker8              ansible_host=172.31.4.17    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker9              ansible_host=172.31.5.51    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker10             ansible_host=172.31.12.148  ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker11             ansible_host=172.31.0.116   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker12             ansible_host=172.31.9.86    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker13             ansible_host=172.31.11.59   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker14             ansible_host=172.31.5.44    ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker15             ansible_host=172.31.6.205   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 ; db group is only used if db.provider is CouchDB
 [db]
-172.31.13.56        ansible_host=172.31.13.56 ansible_connection=local
+172.31.14.61        ansible_host=172.31.14.61 ansible_connection=local
 
 [redis]
-172.31.13.56        ansible_host=172.31.13.56 ansible_connection=local
+172.31.14.61        ansible_host=172.31.14.61 ansible_connection=local
 
 [apigateway]
-172.31.13.56        ansible_host=172.31.13.56 ansible_connection=local
+172.31.14.61        ansible_host=172.31.14.61 ansible_connection=local
 
 [etcd]
-172.31.13.56        ansible_host=172.31.13.56 ansible_connection=local
+172.31.14.61        ansible_host=172.31.14.61 ansible_connection=local
 
