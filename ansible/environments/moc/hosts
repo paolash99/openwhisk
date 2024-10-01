@@ -1,16 +1,16 @@
 ansible ansible_connection=local
 
 [edge]
-172.31.9.248        ansible_host=172.31.9.248 ansible_connection=local
+172.31.7.135        ansible_host=172.31.7.135 ansible_connection=local
 
 [controllers]
-controller0           ansible_host=172.31.9.248 ansible_connection=local
+controller0           ansible_host=172.31.7.135 ansible_connection=local
 
 [kafkas]
 kafka0                ansible_host=172.31.9.248 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [schedulers]
-scheduler0            ansible_host=172.31.9.248 ansible_connection=local
+scheduler0            ansible_host=172.31.7.135 ansible_connection=local
 
 [zookeepers:children]
 kafkas
@@ -24,14 +24,14 @@ invoker1              ansible_host=172.31.14.78   ansible_connection=ssh ansible
 
 ; db group is only used if db.provider is CouchDB
 [db]
-172.31.9.248        ansible_host=172.31.9.248 ansible_connection=local
+172.31.7.135        ansible_host=172.31.7.135 ansible_connection=local
 
 [redis]
-172.31.9.248        ansible_host=172.31.9.248 ansible_connection=local
+172.31.7.135        ansible_host=172.31.7.135 ansible_connection=local
 
 [apigateway]
-172.31.9.248        ansible_host=172.31.9.248 ansible_connection=local
+172.31.7.135        ansible_host=172.31.7.135 ansible_connection=local
 
 [etcd]
-172.31.9.248        ansible_host=172.31.9.248 ansible_connection=local
+172.31.7.135        ansible_host=172.31.7.135 ansible_connection=local
 
