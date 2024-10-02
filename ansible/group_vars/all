@@ -84,7 +84,7 @@ limits:
 
 # Moved here to avoid recursions. Please do not use outside of controller-dict.
 __controller_ssl_keyPrefix: "controller-"
-__controller_blackbox_fraction: 0.10
+__controller_blackbox_fraction: 1
 
 # port means outer port
 controller:
@@ -488,7 +488,7 @@ etcd_connect_string: "{% set ret = [] %}\
                       {{ ret | join(',') }}"
 
 
-__scheduler_blackbox_fraction: 0.10
+__scheduler_blackbox_fraction: 1
 
 watcher:
     eventNotificationDelayMs: "{{ watcher_notification_delay | default('5000 ms')  }}"
