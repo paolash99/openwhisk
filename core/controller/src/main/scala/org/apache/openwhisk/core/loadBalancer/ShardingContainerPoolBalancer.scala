@@ -246,45 +246,60 @@ class ShardingContainerPoolBalancer(
         schedulingState.updateCluster(availableMembers.size)
     }
   }))
-
-  /** Loadbalancer interface methods */
+  
+   /** Loadbalancer interface methods */
   override def invokerHealth(): Future[IndexedSeq[InvokerHealth]] = Future.successful(schedulingState.invokers)
   override def clusterSize: Int = schedulingState.clusterSize
 
   /** 1. Publish a message to the loadbalancer */
-  override def publish(action: ExecutableWhiskActionMetaData, msg: ActivationMessage)(
-    implicit transid: TransactionId): Future[Future[Either[ActivationId, WhiskActivation]]] = {
 
-    val isBlackboxInvocation = action.exec.pull
-    val actionType = if (!isBlackboxInvocation) "managed" else "blackbox"
-    val (invokersToUse, stepSizes) =
-      if (!isBlackboxInvocation) (schedulingState.managedInvokers, schedulingState.managedStepSizes)
-      else (schedulingState.blackboxInvokers, schedulingState.blackboxStepSizes)
-    val chosen = if (invokersToUse.nonEmpty) {
-      val hash = ShardingContainerPoolBalancer.generateHash(msg.user.namespace.name, action.fullyQualifiedName(false))
-      val homeInvoker = hash % invokersToUse.size
-      val stepSize = stepSizes(hash % stepSizes.size)
-      val invoker: Option[(InvokerInstanceId, Boolean)] = ShardingContainerPoolBalancer.schedule(
-        action.limits.concurrency.maxConcurrent,
-        action.fullyQualifiedName(true),
-        invokersToUse,
-        schedulingState.invokerSlots,
-        action.limits.memory.megabytes,
-        homeInvoker,
-        stepSize)
-      invoker.foreach {
-        case (_, true) =>
-          val metric =
-            if (isBlackboxInvocation)
-              LoggingMarkers.BLACKBOX_SYSTEM_OVERLOAD
-            else
-              LoggingMarkers.MANAGED_SYSTEM_OVERLOAD
-          MetricEmitter.emitCounterMetric(metric)
-        case _ =>
-      }
-      invoker.map(_._1)
-    } else {
-      None
+override def publish(action: ExecutableWhiskActionMetaData, msg: ActivationMessage)(
+  implicit transid: TransactionId): Future[Future[Either[ActivationId, WhiskActivation]]] = {
+
+  val isBlackboxInvocation = action.exec.pull
+  val actionType = if (!isBlackboxInvocation) "managed" else "blackbox"
+  val (invokersToUse, stepSizes) =
+    if (!isBlackboxInvocation) (schedulingState.managedInvokers, schedulingState.managedStepSizes)
+    else (schedulingState.blackboxInvokers, schedulingState.blackboxStepSizes)
+
+  // Log the available invokers
+  logging.info(this, s"Available invokers: ${invokersToUse.map(_.id.toString).mkString(", ")}")
+
+  if (invokersToUse.nonEmpty) {
+    val hash = ShardingContainerPoolBalancer.generateHash(msg.user.namespace.name, action.fullyQualifiedName(false))
+    val homeInvoker = hash % invokersToUse.size
+
+    // Log the home invoker based on the hash
+    logging.info(this, s"Home Invoker ID: ${invokersToUse(homeInvoker).id.toString}, Hash: $hash")
+
+    val stepSize = stepSizes(hash % stepSizes.size)
+
+    // Log the step size
+    logging.info(this, s"Step size: $stepSize")
+
+    val invoker: Option[(InvokerInstanceId, Boolean)] = ShardingContainerPoolBalancer.schedule(
+      action.limits.concurrency.maxConcurrent,
+      action.fullyQualifiedName(true),
+      invokersToUse,
+      schedulingState.invokerSlots,
+      action.limits.memory.megabytes,
+      homeInvoker,
+      stepSize)
+
+    invoker.foreach {
+      case (_, true) =>
+        val metric =
+          if (isBlackboxInvocation)
+            LoggingMarkers.BLACKBOX_SYSTEM_OVERLOAD
+          else
+            LoggingMarkers.MANAGED_SYSTEM_OVERLOAD
+        MetricEmitter.emitCounterMetric(metric)
+      case _ =>
+    }
+    invoker.map(_._1)
+  } else {
+    logging.error(this, "No invokers are available to schedule activations.")
+    None
     }
 
     chosen
@@ -395,44 +410,50 @@ object ShardingContainerPoolBalancer extends LoadBalancerProvider {
    * @param step stable identifier of the entity to be scheduled
    * @return an invoker to schedule to or None of no invoker is available
    */
-  @tailrec
-  def schedule(
-    maxConcurrent: Int,
-    fqn: FullyQualifiedEntityName,
-    invokers: IndexedSeq[InvokerHealth],
-    dispatched: IndexedSeq[NestedSemaphore[FullyQualifiedEntityName]],
-    slots: Int,
-    index: Int,
-    step: Int,
-    stepsDone: Int = 0)(implicit logging: Logging, transId: TransactionId): Option[(InvokerInstanceId, Boolean)] = {
-    val numInvokers = invokers.size
+@tailrec
+def schedule(
+  maxConcurrent: Int,
+  fqn: FullyQualifiedEntityName,
+  invokers: IndexedSeq[InvokerHealth],
+  dispatched: IndexedSeq[NestedSemaphore[FullyQualifiedEntityName]],
+  slots: Int,
+  index: Int,
+  step: Int,
+  stepsDone: Int = 0)(implicit logging: Logging, transId: TransactionId): Option[(InvokerInstanceId, Boolean)] = {
+  
+  val numInvokers = invokers.size
 
-    if (numInvokers > 0) {
-      val invoker = invokers(index)
-      //test this invoker - if this action supports concurrency, use the scheduleConcurrent function
-      if (invoker.status.isUsable && dispatched(invoker.id.toInt).tryAcquireConcurrent(fqn, maxConcurrent, slots)) {
-        Some(invoker.id, false)
-      } else {
-        // If we've gone through all invokers
-        if (stepsDone == numInvokers + 1) {
-          val healthyInvokers = invokers.filter(_.status.isUsable)
-          if (healthyInvokers.nonEmpty) {
-            // Choose a healthy invoker randomly
-            val random = healthyInvokers(ThreadLocalRandom.current().nextInt(healthyInvokers.size)).id
-            dispatched(random.toInt).forceAcquireConcurrent(fqn, maxConcurrent, slots)
-            logging.warn(this, s"system is overloaded. Chose invoker${random.toInt} by random assignment.")
-            Some(random, true)
-          } else {
-            None
-          }
-        } else {
-          val newIndex = (index + step) % numInvokers
-          schedule(maxConcurrent, fqn, invokers, dispatched, slots, newIndex, step, stepsDone + 1)
-        }
-      }
+  // Log current index, step size, and number of invokers
+  logging.info(this, s"Checking invoker at index: $index, Step size: $step, Total invokers: $numInvokers")
+
+  if (numInvokers > 0) {
+    val invoker = invokers(index)
+
+    // Log invoker health status
+    logging.info(this, s"Invoker ID: ${invoker.id.toString}, Health: ${invoker.status}")
+
+    if (invoker.status.isUsable && dispatched(invoker.id.toInt).tryAcquireConcurrent(fqn, maxConcurrent, slots)) {
+      logging.info(this, s"Selected invoker ID: ${invoker.id.toString}")
+      Some(invoker.id, false)
     } else {
-      None
+      if (stepsDone == numInvokers + 1) {
+        val healthyInvokers = invokers.filter(_.status.isUsable)
+        if (healthyInvokers.nonEmpty) {
+          val random = healthyInvokers(ThreadLocalRandom.current().nextInt(healthyInvokers.size)).id
+          dispatched(random.toInt).forceAcquireConcurrent(fqn, maxConcurrent, slots)
+          logging.warn(this, s"System overloaded. Chose invoker${random.toInt} by random assignment.")
+          Some(random, true)
+        } else {
+          None
+        }
+      } else {
+        val newIndex = (index + step) % numInvokers
+        schedule(maxConcurrent, fqn, invokers, dispatched, slots, newIndex, step, stepsDone + 1)
+      }
     }
+  } else {
+    logging.error(this, "No invokers available to schedule activations.")
+    None
   }
 }
 
