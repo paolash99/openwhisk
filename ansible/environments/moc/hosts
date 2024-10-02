@@ -1,16 +1,16 @@
 ansible ansible_connection=local
 
 [edge]
-172.31.9.213        ansible_host=172.31.9.213 ansible_connection=local
+172.31.15.147        ansible_host=172.31.15.147 ansible_connection=local
 
 [controllers]
-controller0           ansible_host=172.31.9.213 ansible_connection=local
+controller0           ansible_host=172.31.15.147 ansible_connection=local
 
 [kafkas]
-kafka0                ansible_host=172.31.12.243 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+kafka0                ansible_host=172.31.4.208 ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 [schedulers]
-scheduler0            ansible_host=172.31.9.213 ansible_connection=local
+scheduler0            ansible_host=172.31.15.147 ansible_connection=local
 
 [zookeepers:children]
 kafkas
@@ -19,19 +19,19 @@ kafkas
 db
 pauth.w
 [invokers]
-invoker0              ansible_host=172.31.6.254   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
-invoker1              ansible_host=172.31.12.46   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker0              ansible_host=172.31.11.254   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
+invoker1              ansible_host=172.31.4.208   ansible_connection=ssh ansible_user=ubuntu ansible_ssh_private_key_file=/home/ubuntu/slsfs/deploy/slsfs.pem
 
 ; db group is only used if db.provider is CouchDB
 [db]
-172.31.9.213        ansible_host=172.31.9.213 ansible_connection=local
+172.31.15.147        ansible_host=172.31.15.147 ansible_connection=local
 
 [redis]
-172.31.9.213        ansible_host=172.31.9.213 ansible_connection=local
+172.31.15.147        ansible_host=172.31.15.147 ansible_connection=local
 
 [apigateway]
-172.31.9.213        ansible_host=172.31.9.213 ansible_connection=local
+172.31.15.147        ansible_host=172.31.15.147 ansible_connection=local
 
 [etcd]
-172.31.9.213        ansible_host=172.31.9.213 ansible_connection=local
+172.31.15.147        ansible_host=172.31.15.147 ansible_connection=local
 
