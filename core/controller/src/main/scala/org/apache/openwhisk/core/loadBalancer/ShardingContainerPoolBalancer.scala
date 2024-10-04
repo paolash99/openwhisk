@@ -250,7 +250,8 @@ class ShardingContainerPoolBalancer(
   /** 1. Publish a message to the loadbalancer */
   override def publish(action: ExecutableWhiskActionMetaData, msg: ActivationMessage)(
     implicit transid: TransactionId): Future[Future[Either[ActivationId, WhiskActivation]]] = {
-
+    logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB2")
+    emitMetrics()
     val isBlackboxInvocation = action.exec.pull
     val actionType = if (!isBlackboxInvocation) "managed" else "blackbox"
     val (invokersToUse, stepSizes) =
@@ -402,11 +403,12 @@ object ShardingContainerPoolBalancer extends LoadBalancerProvider {
     step: Int,
     stepsDone: Int = 0)(implicit logging: Logging, transId: TransactionId): Option[(InvokerInstanceId, Boolean)] = {
     val numInvokers = invokers.size
-
+    logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB")
+    emitMetrics()
     if (numInvokers > 0) {
       val invoker = invokers(index)
       //test this invoker - if this action supports concurrency, use the scheduleConcurrent function
-      emitMetrics()
+      logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB3")
       logging.info(this, s"Total user memory for blackbox invokers: $curr.id.userMemory.toMB MB")
       if (invoker.status.isUsable && dispatched(invoker.id.toInt).tryAcquireConcurrent(fqn, maxConcurrent, slots)) {
         Some(invoker.id, false)
