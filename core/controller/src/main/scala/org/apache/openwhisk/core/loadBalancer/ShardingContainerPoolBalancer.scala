@@ -403,12 +403,10 @@ object ShardingContainerPoolBalancer extends LoadBalancerProvider {
     step: Int,
     stepsDone: Int = 0)(implicit logging: Logging, transId: TransactionId): Option[(InvokerInstanceId, Boolean)] = {
     val numInvokers = invokers.size
-    logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB")
+        logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB" paola)
     if (numInvokers > 0) {
       val invoker = invokers(index)
       //test this invoker - if this action supports concurrency, use the scheduleConcurrent function
-      logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB3")
-      logging.info(this, s"Total user memory for blackbox invokers: $invoker.id.userMemory.toMB MB")
       if (invoker.status.isUsable && dispatched(invoker.id.toInt).tryAcquireConcurrent(fqn, maxConcurrent, slots)) {
         Some(invoker.id, false)
       } else {
