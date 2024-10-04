@@ -165,26 +165,27 @@ class ShardingContainerPoolBalancer(
   }
 
   override protected def emitMetrics() = {
-    super.emitMetrics()
+      super.emitMetrics()
 
-    // Log total memory available for blackbox invokers
-    val blackboxMemory = schedulingState.blackboxInvokers.foldLeft(0L) { (total, curr) =>
+      // Log total memory available for blackbox invokers
+      val blackboxMemory = schedulingState.blackboxInvokers.foldLeft(0L) { (total, curr) =>
         if (curr.status.isUsable) {
-            curr.id.userMemory.toMB + total
+          curr.id.userMemory.toMB + total
         } else {
-            total
+          total
         }
-    }
-    MetricEmitter.emitGaugeMetric(INVOKER_TOTALMEM_BLACKBOX, blackboxMemory)
-    logging.info(this, s"Total user memory for blackbox invokers: $blackboxMemory MB")(TransactionId.invoker)
+      }
+      MetricEmitter.emitGaugeMetric(INVOKER_TOTALMEM_BLACKBOX, blackboxMemory)
+      logging.info(this, s"Total user memory for blackbox invokers: $blackboxMemory MB")(TransactionId.invoker)
 
-  // Log total memory available for managed invokers
-    val managedMemory = schedulingState.managedInvokers.foldLeft(0L) { (total, curr) =>
+      // Log total memory available for managed invokers
+      val managedMemory = schedulingState.managedInvokers.foldLeft(0L) { (total, curr) =>
         if (curr.status.isUsable) {
-            curr.id.userMemory.toMB + total
+          curr.id.userMemory.toMB + total
         } else {
-            total
+          total
         }
+      }
     MetricEmitter.emitGaugeMetric(INVOKER_TOTALMEM_MANAGED, managedMemory)
     logging.info(this, s"Total user memory for managed invokers: $managedMemory MB")(TransactionId.invoker)
 
@@ -197,7 +198,6 @@ class ShardingContainerPoolBalancer(
     MetricEmitter.emitGaugeMetric(UNRESPONSIVE_INVOKER_BLACKBOX, schedulingState.blackboxInvokers.count(_.status == Unresponsive))
     MetricEmitter.emitGaugeMetric(OFFLINE_INVOKER_BLACKBOX, schedulingState.blackboxInvokers.count(_.status == Offline))
   }
-
   /** State needed for scheduling. */
   val schedulingState = ShardingContainerPoolBalancerState()(lbConfig)
 
