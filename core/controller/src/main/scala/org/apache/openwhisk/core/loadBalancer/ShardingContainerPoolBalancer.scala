@@ -405,6 +405,7 @@ object ShardingContainerPoolBalancer extends LoadBalancerProvider {
 
     if (numInvokers > 0) {
       val invoker = invokers(index)
+       emitMetrics()
       //test this invoker - if this action supports concurrency, use the scheduleConcurrent function
       if (invoker.status.isUsable && dispatched(invoker.id.toInt).tryAcquireConcurrent(fqn, maxConcurrent, slots)) {
         Some(invoker.id, false)
