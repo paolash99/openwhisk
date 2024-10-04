@@ -263,11 +263,7 @@ class ShardingContainerPoolBalancer(
     val chosen = if (invokersToUse.nonEmpty) {
       val hash = ShardingContainerPoolBalancer.generateHash(msg.user.namespace.name, action.fullyQualifiedName(false))
       val homeInvoker = hash % invokersToUse.size
-          logging.info(this, s"Home Invoker ID: ${invokersToUse(homeInvoker).id.toString}, Hash: $hash")
-
       val stepSize = stepSizes(hash % stepSizes.size)
-    logging.info(this, s"Step size: $stepSize")
-
       val invoker: Option[(InvokerInstanceId, Boolean)] = ShardingContainerPoolBalancer.schedule(
         action.limits.concurrency.maxConcurrent,
         action.fullyQualifiedName(true),
@@ -288,7 +284,6 @@ class ShardingContainerPoolBalancer(
       }
       invoker.map(_._1)
     } else {
-          logging.error(this, "No invokers are available to schedule activations.")
       None
     }
 
@@ -411,15 +406,11 @@ object ShardingContainerPoolBalancer extends LoadBalancerProvider {
     step: Int,
     stepsDone: Int = 0)(implicit logging: Logging, transId: TransactionId): Option[(InvokerInstanceId, Boolean)] = {
     val numInvokers = invokers.size
-      logging.info(this, s"Checking invoker at index: $index, Step size: $step, Total invokers: $numInvokers")
 
     if (numInvokers > 0) {
       val invoker = invokers(index)
       //test this invoker - if this action supports concurrency, use the scheduleConcurrent function
-          logging.info(this, s"Invoker ID: ${invoker.id.toString}, Health: ${invoker.status}")
-
       if (invoker.status.isUsable && dispatched(invoker.id.toInt).tryAcquireConcurrent(fqn, maxConcurrent, slots)) {
-              logging.info(this, s"Selected invoker ID: ${invoker.id.toString}")
         Some(invoker.id, false)
       } else {
         // If we've gone through all invokers
@@ -440,7 +431,6 @@ object ShardingContainerPoolBalancer extends LoadBalancerProvider {
         }
       }
     } else {
-          logging.error(this, "No invokers available to schedule activations.")
       None
     }
   }
