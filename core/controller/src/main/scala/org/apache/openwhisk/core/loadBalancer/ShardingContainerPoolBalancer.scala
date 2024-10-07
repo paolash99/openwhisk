@@ -165,39 +165,43 @@ class ShardingContainerPoolBalancer(
   }
 
   override protected def emitMetrics() = {
-      super.emitMetrics()
-
-      // Log total memory available for blackbox invokers
-      val blackboxMemory = schedulingState.blackboxInvokers.foldLeft(0L) { (total, curr) =>
+    super.emitMetrics()
+    MetricEmitter.emitGaugeMetric(
+      INVOKER_TOTALMEM_BLACKBOX,
+      schedulingState.blackboxInvokers.foldLeft(0L) { (total, curr) =>
         if (curr.status.isUsable) {
           curr.id.userMemory.toMB + total
         } else {
           total
         }
-      }
-      MetricEmitter.emitGaugeMetric(INVOKER_TOTALMEM_BLACKBOX, blackboxMemory)
-      logging.info(this, s"Total user memory for blackbox invokers: $blackboxMemory MB")(TransactionId.invoker)
-
-      // Log total memory available for managed invokers
-      val managedMemory = schedulingState.managedInvokers.foldLeft(0L) { (total, curr) =>
+      })
+    MetricEmitter.emitGaugeMetric(
+      INVOKER_TOTALMEM_MANAGED,
+      schedulingState.managedInvokers.foldLeft(0L) { (total, curr) =>
         if (curr.status.isUsable) {
           curr.id.userMemory.toMB + total
         } else {
           total
         }
-      }
-    MetricEmitter.emitGaugeMetric(INVOKER_TOTALMEM_MANAGED, managedMemory)
-    logging.info(this, s"Total user memory for managed invokers: $managedMemory MB")(TransactionId.invoker)
-
+      })
     MetricEmitter.emitGaugeMetric(HEALTHY_INVOKER_MANAGED, schedulingState.managedInvokers.count(_.status == Healthy))
-    MetricEmitter.emitGaugeMetric(UNHEALTHY_INVOKER_MANAGED, schedulingState.managedInvokers.count(_.status == Unhealthy))
-    MetricEmitter.emitGaugeMetric(UNRESPONSIVE_INVOKER_MANAGED, schedulingState.managedInvokers.count(_.status == Unresponsive))
+    MetricEmitter.emitGaugeMetric(
+      UNHEALTHY_INVOKER_MANAGED,
+      schedulingState.managedInvokers.count(_.status == Unhealthy))
+    MetricEmitter.emitGaugeMetric(
+      UNRESPONSIVE_INVOKER_MANAGED,
+      schedulingState.managedInvokers.count(_.status == Unresponsive))
     MetricEmitter.emitGaugeMetric(OFFLINE_INVOKER_MANAGED, schedulingState.managedInvokers.count(_.status == Offline))
     MetricEmitter.emitGaugeMetric(HEALTHY_INVOKER_BLACKBOX, schedulingState.blackboxInvokers.count(_.status == Healthy))
-    MetricEmitter.emitGaugeMetric(UNHEALTHY_INVOKER_BLACKBOX, schedulingState.blackboxInvokers.count(_.status == Unhealthy))
-    MetricEmitter.emitGaugeMetric(UNRESPONSIVE_INVOKER_BLACKBOX, schedulingState.blackboxInvokers.count(_.status == Unresponsive))
+    MetricEmitter.emitGaugeMetric(
+      UNHEALTHY_INVOKER_BLACKBOX,
+      schedulingState.blackboxInvokers.count(_.status == Unhealthy))
+    MetricEmitter.emitGaugeMetric(
+      UNRESPONSIVE_INVOKER_BLACKBOX,
+      schedulingState.blackboxInvokers.count(_.status == Unresponsive))
     MetricEmitter.emitGaugeMetric(OFFLINE_INVOKER_BLACKBOX, schedulingState.blackboxInvokers.count(_.status == Offline))
   }
+
   /** State needed for scheduling. */
   val schedulingState = ShardingContainerPoolBalancerState()(lbConfig)
 
@@ -250,8 +254,7 @@ class ShardingContainerPoolBalancer(
   /** 1. Publish a message to the loadbalancer */
   override def publish(action: ExecutableWhiskActionMetaData, msg: ActivationMessage)(
     implicit transid: TransactionId): Future[Future[Either[ActivationId, WhiskActivation]]] = {
-    logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB2")
-    emitMetrics()
+
     val isBlackboxInvocation = action.exec.pull
     val actionType = if (!isBlackboxInvocation) "managed" else "blackbox"
     val (invokersToUse, stepSizes) =
@@ -403,7 +406,7 @@ object ShardingContainerPoolBalancer extends LoadBalancerProvider {
     step: Int,
     stepsDone: Int = 0)(implicit logging: Logging, transId: TransactionId): Option[(InvokerInstanceId, Boolean)] = {
     val numInvokers = invokers.size
-    logging.info(this, "AAAAAAAAAAHHHOMMMMMMMMMMAAZZZBBBBBBBBBBBBBBB PAOLA")
+
     if (numInvokers > 0) {
       val invoker = invokers(index)
       //test this invoker - if this action supports concurrency, use the scheduleConcurrent function
