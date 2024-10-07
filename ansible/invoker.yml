@@ -18,10 +18,6 @@
 # This playbook deploys Openwhisk Invokers.
 
 - hosts: invokers
-    invoker0:
-      user_memory: "1g"
-    invoker1:
-      user_memory: "1g"
   vars:
     #
     # host_group - usually "{{ groups['...'] }}" where '...' is what was used
