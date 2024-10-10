@@ -25,6 +25,7 @@
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"
     env:
+        ZOO_MAX_CLIENT_CNXNS: "100"
         TZ: "{{ docker.timezone }}"
         ZOO_MY_ID: "{{ groups['zookeepers'].index(inventory_hostname) + 1 }}"
         ZOO_SERVERS: "{% set zhosts = [] %}
