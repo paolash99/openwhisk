@@ -427,8 +427,6 @@
     image:
       "{{docker_registry~docker.image.prefix}}/controller:{{ 'cov' if (coverage_enabled) else docker.image.tag }}"
     state: started
-    networks:
-      - name: openwhisk-net
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"
     hostname: "{{ controller_name }}"
