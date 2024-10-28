@@ -22,6 +22,8 @@
     name: kafka
     image: "{{ docker_registry }}{{ docker.image.prefix }}/kafka:{{ docker.image.tag }}"
     keep_volumes: False
+    networks:
+      - name: openwhisk-net
     state: absent
   ignore_errors: True
 
@@ -30,5 +32,7 @@
     name: kafka{{ groups['kafkas'].index(inventory_hostname) }}
     image: "{{ docker_registry }}{{ docker.image.prefix }}/kafka:{{ docker.image.tag }}"
     keep_volumes: False
+    networks:
+      - name: openwhisk-net
     state: absent
   ignore_errors: True

@@ -21,6 +21,8 @@
   docker_container:
     name: zookeeper
     image: "{{ docker_registry }}{{ docker.image.prefix }}/zookeeper:{{ docker.image.tag }}"
+    networks:
+      - name: openwhisk-net
     keep_volumes: False
     state: absent
   ignore_errors: True
@@ -29,6 +31,8 @@
   docker_container:
     name: zookeeper{{ groups['zookeepers'].index(inventory_hostname) }}
     image: "{{ docker_registry }}{{ docker.image.prefix }}/zookeeper:{{ docker.image.tag }}"
+    networks:
+      - name: openwhisk-net
     keep_volumes: False
     state: absent
   ignore_errors: True

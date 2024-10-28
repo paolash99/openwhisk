@@ -21,6 +21,8 @@
   docker_container:
     name: nginx
     image: nginx
+    networks:
+      - name: openwhisk-net
     state: absent
   ignore_errors: True
 

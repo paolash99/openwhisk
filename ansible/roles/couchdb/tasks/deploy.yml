@@ -63,6 +63,8 @@
   docker_container:
     name: couchdb
     image: "{{ couchdb_image }}"
+    networks:
+      - name: openwhisk-net
     state: started
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"

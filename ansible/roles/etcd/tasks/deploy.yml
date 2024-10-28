@@ -40,6 +40,8 @@
     name: etcd{{ groups['etcd'].index(inventory_hostname) }}
     image: quay.io/coreos/etcd:{{ etcd.version }}
     state: started
+    networks:
+      - name: openwhisk-net
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"
     volumes: "{{volume_dir | default([])}}"

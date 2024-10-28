@@ -67,6 +67,8 @@
   docker_container:
     name: "{{ elasticsearch_name }}"
     image: "{{ elasticsearch_image }}"
+    networks:
+      - name: openwhisk-net
     state: started
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"

@@ -25,6 +25,8 @@
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"
     hostname: apigateway
+    networks:
+      - name: openwhisk-net
     env:
       "REDIS_HOST": "{{ groups['redis'] | first }}"
       "REDIS_PORT": "{{ redis.port }}"

@@ -28,6 +28,8 @@
   docker_container:
     name: redis
     image: redis:{{ redis.version }}
+    networks:
+      - name: openwhisk-net
     state: started
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"

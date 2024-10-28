@@ -93,6 +93,8 @@
     name: nginx
     image: nginx:{{ nginx.version }}
     state: started
+    networks:
+      - name: openwhisk-net
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"
     hostname: "nginx"
