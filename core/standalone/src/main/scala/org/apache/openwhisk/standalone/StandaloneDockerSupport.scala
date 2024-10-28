@@ -70,7 +70,7 @@ case class ServiceContainer(port: Int, description: String, name: String)
 
 object StandaloneDockerSupport {
   val prefix = "whisk-"
-  val network = "bridge"
+  val network = "openwhisk-net"
 
   def checkOrAllocatePort(preferredPort: Int): Int = {
     if (isPortFree(preferredPort)) preferredPort else freePort()
