@@ -33,7 +33,7 @@ class ContainerArgsConfigTest extends FlatSpec with Matchers {
     val config = loadConfigOrThrow[ContainerArgsConfig](ConfigKeys.containerArgs)
 
     //check defaults
-    config.network shouldBe "openwhisk-net"
+    config.network shouldBe "bridge"
     config.dnsServers shouldBe Seq[String]()
     config.dnsSearch shouldBe Seq[String]()
     config.dnsOptions shouldBe Seq[String]()
@@ -57,7 +57,7 @@ class ContainerArgsConfigTest extends FlatSpec with Matchers {
 
     val config = loadConfigOrThrow[ContainerArgsConfig](ConfigKeys.containerArgs)
     //check defaults
-    config.network shouldBe "openwhisk-net"
+    config.network shouldBe "bridge"
     config.dnsServers shouldBe Seq[String]("google.com", "1.2.3.4")
     config.dnsSearch shouldBe Seq[String]("a.b.c", "a.b")
     config.dnsOptions shouldBe Seq[String]("ndots:5")

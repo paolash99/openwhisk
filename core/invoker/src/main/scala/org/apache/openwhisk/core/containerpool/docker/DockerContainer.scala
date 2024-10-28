@@ -64,7 +64,7 @@ object DockerContainer {
              memory: ByteSize = 256.MB,
              cpuShares: Int = 0,
              environment: Map[String, String] = Map.empty,
-             network: String = "openwhisk-net",
+             network: String = "bridge",
              dnsServers: Seq[String] = Seq.empty,
              dnsSearch: Seq[String] = Seq.empty,
              dnsOptions: Seq[String] = Seq.empty,
