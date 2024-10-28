@@ -88,8 +88,6 @@
   docker_container:
     name: kafka{{ groups['kafkas'].index(inventory_hostname) }}
     image: "{{ kafka_image }}"
-    networks:
-      - name: openwhisk-net
     state: started
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"

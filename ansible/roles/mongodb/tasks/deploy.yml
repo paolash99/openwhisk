@@ -24,8 +24,6 @@
   docker_container:
     name: mongodb
     image: "{{ mongodb_image }}"
-    networks:
-      - name: openwhisk-net
     state: started
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"

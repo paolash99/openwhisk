@@ -21,8 +21,6 @@
   docker_container:
     name: zookeeper{{ groups['zookeepers'].index(inventory_hostname) }}
     image: zookeeper:{{ zookeeper.version }}
-    networks:
-      - name: openwhisk-net
     state: started
     recreate: true
     restart_policy: "{{ docker.restart.policy }}"

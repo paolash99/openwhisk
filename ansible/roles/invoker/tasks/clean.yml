@@ -58,8 +58,6 @@
     name: "{{ invoker_name }}"
     image: "{{ docker_registry }}{{ docker.image.prefix }}/invoker:{{ docker.image.tag }}"
     state: absent
-    networks:
-      - name: openwhisk-net
     stop_timeout: 60
     timeout: 120
   ignore_errors: True

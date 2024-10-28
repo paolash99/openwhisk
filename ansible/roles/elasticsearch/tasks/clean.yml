@@ -28,8 +28,6 @@
   docker_container:
     name: "{{ elasticsearch_name }}"
     image: "{{ elasticsearch_image }}"
-    networks:
-      - name: openwhisk-net
     keep_volumes: False
     state: absent
   ignore_errors: True
